@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Daftar Siswa</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Daftar Siswa</h2>
+
+    <!-- Form Tambah Siswa -->
+    <div class="card mb-4 shadow">
+        <div class="card-body">
+            <form action="/add" method="POST" class="d-flex gap-2">
+                <input type="text" name="nama" class="form-control" placeholder="Nama Siswa" required>
+                <input type="text" name="kelas" class="form-control" placeholder="Kelas" required>
+                <button type="submit" class="btn btn-success">Tambah</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Tabel Siswa -->
+    <table class="table table-bordered table-striped shadow">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Nama</th>
+                <th>Kelas</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for student in students %}
+            <tr>
+                <td>{{ student[0] }}</td>
+                <td>{{ student[1] }}</td>
+                <td>{{ student[2] }}</td>
+                <td>
+                    <!-- Tombol Edit -->
+                    <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editModal{{ student[0] }}">Edit</button>
+                    <!-- Tombol Hapus -->
+                    <a href="/delete/{{ student[0] }}" class="btn btn-danger btn-sm">Hapus</a>
+                </td>
+            </tr>
+
+            <!-- Modal Edit -->
+            <div class="modal fade" id="editModal{{ student[0] }}" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Edit Siswa</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <form action="/edit/{{ student[0] }}" method="POST">
+                            <div class="modal-body">
+                                <input type="text" name="nama" class="form-control mb-2" value="{{ student[1] }}" required>
+                                <input type="text" name="kelas" class="form-control" value="{{ student[2] }}" required>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Simpan</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
